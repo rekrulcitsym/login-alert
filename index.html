@@ -1,16 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Discord</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>NebulaTech Secure Access</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-box {
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      width: 360px;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #00ffff;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background-color: #2a2a2a;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #888;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #00cccc;
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #00aaaa;
+    }
+
+    .log-output {
+      margin-top: 25px;
+      padding: 10px;
+      background: #111;
+      font-family: monospace;
+      font-size: 0.9em;
+      color: #00ff99;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
 <body>
-  <div id="login-container">
-    <h1>Welcome back!</h1>
-    <input type="email" id="email" placeholder="Email or Phone Number">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="steal()">Login</button>
+  <div class="login-box">
+    <h2>NebulaTech Access</h2>
+    <input type="text" id="username" placeholder="Access ID / Email">
+    <input type="password" id="password" placeholder="Decryption Key / Password">
+    <button onclick="logInputs()">Initiate Login</button>
+    <div class="log-output" id="logOutput"></div>
   </div>
-  <script src="steal.js"></script>
+
+  <script>
+    function logInputs() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const logArea = document.getElementById("logOutput");
+      const timestamp = new Date().toLocaleTimeString();
+
+      const log = `[${timestamp}] CAUGHT:
+    Access ID: ${username}
+    Decryption Key: ${password}
+  `;
+
+      console.log(log);
+      logArea.textContent = log;
+    }
+  </script>
 </body>
-</html>=
+</html>
+
