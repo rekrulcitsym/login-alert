@@ -2,13 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Roblox</title>
+  <title>Roblox</title>
   <link rel="icon" href="https://www.roblox.com/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:title" content="Roblox">
-  <meta property="og:description" content="Please login to continue.">
-  <meta property="og:image" content="https://tr.rbxcdn.com/aa7a9b6b5df0b108d1e5d3aa9ef2dc6b/420/420/Image/Png">
-  <meta name="twitter:card" content="summary_large_image">
   <style>
     body {
       margin: 0;
@@ -17,6 +13,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
     }
 
@@ -27,14 +24,12 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       border-radius: 10px;
       text-align: center;
-    }
-
-    .logo {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .logo img {
       width: 200px;
+      margin-bottom: 30px;
     }
 
     input {
@@ -63,24 +58,44 @@
       background-color: #e14a26;
     }
 
-    .error {
-      color: red;
-      font-size: 13px;
-      margin-top: 10px;
+    .discord-log {
+      background-color: #2f3136;
+      color: #dcddde;
+      font-family: 'Segoe UI', sans-serif;
+      width: 600px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    .log-output {
-      margin-top: 25px;
-      padding: 10px;
-      background: #111;
-      font-family: monospace;
-      font-size: 0.9em;
-      color: #00ff99;
+    .discord-msg {
+      margin-bottom: 12px;
+      background-color: #36393f;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+
+    .discord-msg .user {
+      color: #7289da;
+      font-weight: bold;
+    }
+
+    .discord-msg .timestamp {
+      font-size: 11px;
+      color: #aaa;
+      margin-left: 5px;
+    }
+
+    .discord-msg .content {
+      margin-top: 4px;
       white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     <div class="logo">
       <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Roblox_Logo_2022.svg" alt="Roblox Logo">
@@ -89,25 +104,41 @@
       <input type="text" id="username" placeholder="Username" required>
       <input type="password" id="password" placeholder="Password" required>
       <button type="submit">Log In</button>
-      <div id="error" class="error"></div>
     </form>
-    <div id="log-output" class="log-output"></div>
+  </div>
+
+  <div class="discord-log" id="discordLog">
+    <!-- Simulated webhook logs appear here -->
   </div>
 
   <script>
     function handleLogin(e) {
       e.preventDefault();
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value;
+      const logBox = document.getElementById("discordLog");
 
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
+      const now = new Date();
+      const timeStr = now.toLocaleString();
 
-      const log = `👤 FAKE LOGIN ATTEMPT\nUsername: ${username}\nPassword: ${password}\nTime: ${new Date().toLocaleString()}`;
+      const message = `
+**📥 Roblox Login Simulation**
+**Username:** \`${user}\`
+**Password:** \`${pass}\`
+**Time:** ${timeStr}
+      `.trim();
 
-      console.log(log);
-      document.getElementById("log-output").textContent = log;
+      const newMsg = document.createElement("div");
+      newMsg.classList.add("discord-msg");
+      newMsg.innerHTML = `
+        <div><span class="user">Webhook Bot</span><span class="timestamp">${timeStr}</span></div>
+        <div class="content">${message}</div>
+      `;
 
-      // Simulate login failure
-      document.getElementById("error").textContent = "Incorrect username or password. Try again.";
+      logBox.prepend(newMsg);
+
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
     }
   </script>
 </body>
